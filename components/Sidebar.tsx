@@ -33,9 +33,10 @@ const oldUnselectedClasses =
 const oldUnselectedIconClass =
   "text-lg text-white opacity-80 group-hover:text-yellow-300";
 
-// New: Props for controlling selected index and handling nav selection
-export type SidebarNavKey = "ui-generator" | "my-projects" | "settings";
+// Move SidebarNavKey to be a local type
+type SidebarNavKey = "ui-generator" | "my-projects" | "settings";
 
+// New: Props for controlling selected index and handling nav selection
 type SidebarProps = {
   selectedIndex?: number;
   onSelect?: (index: number, key: SidebarNavKey) => void;
