@@ -1,23 +1,32 @@
 import React from "react";
+import Image from "next/image";
 
 const competitorImages = [
   {
     src: "https://placehold.co/220x160?text=Other+AI+1",
     label: "Other AI 1",
+    width: 220,
+    height: 160,
   },
   {
     src: "https://placehold.co/220x160?text=Other+AI+2",
     label: "Other AI 2",
+    width: 220,
+    height: 160,
   },
   {
     src: "https://placehold.co/220x160?text=Other+AI+3",
     label: "Other AI 3",
+    width: 220,
+    height: 160,
   },
 ];
 
 const ourImage = {
   src: "https://placehold.co/600x400/FFF7B2/1a1a1a?text=MakeWhiz",
   label: "MakeWhiz",
+  width: 600,
+  height: 400,
 };
 
 export default function Compare() {
@@ -35,10 +44,14 @@ export default function Compare() {
                 key={img.label}
                 className="flex flex-col items-center bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-4 min-w-[220px]"
               >
-                <img
+                <Image
                   src={img.src}
                   alt={img.label}
+                  width={img.width}
+                  height={img.height}
                   className="rounded-xl object-cover w-[220px] h-[160px] border-2 border-gray-100"
+                  style={{ width: "220px", height: "160px" }}
+                  unoptimized
                 />
                 <span className="mt-3 text-gray-700 text-base font-semibold">
                   {img.label}
@@ -58,11 +71,14 @@ export default function Compare() {
             MakeWhiz
           </h3>
           <div className="flex flex-col items-center bg-yellow-50 rounded-2xl shadow-2xl border-2 border-yellow-300 p-10 min-w-[360px]">
-            <img
+            <Image
               src={ourImage.src}
               alt={ourImage.label}
+              width={ourImage.width}
+              height={ourImage.height}
               className="rounded-xl object-cover w-[600px] h-[400px] border-4 border-yellow-400 max-w-full"
               style={{ maxWidth: "100%", height: "auto" }}
+              unoptimized
             />
             <span className="mt-7 text-purple-900 text-3xl font-extrabold font-heading">
               {ourImage.label}

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FaChevronLeft, FaChevronRight, FaArrowLeft } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import ArrowBl from "./ui/arrow-bl";
 const showcaseUIs = [
   {
@@ -36,7 +36,6 @@ export default function Showcase() {
   // Fix hydration error by ensuring client-only rendering
   const [mounted, setMounted] = useState(false);
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
   const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,23 +43,20 @@ export default function Showcase() {
   }, []);
 
   const prev = () => {
-    setDirection(-1);
     setCurrent((c) => (c === 0 ? showcaseUIs.length - 1 : c - 1));
   };
   const next = () => {
-    setDirection(1);
     setCurrent((c) => (c === showcaseUIs.length - 1 ? 0 : c + 1));
   };
 
   const handleDotClick = (idx: number) => {
-    setDirection(idx > current ? 1 : -1);
     setCurrent(idx);
   };
 
   if (!mounted) return null;
 
   return (
-    <section className="py-24 bg-purple-100 flex flex-col items-center pr-50"> 
+    <section className="py-24 bg-purple-100 flex flex-col items-center pr-50">
       <div className="flex justify-start mb-2 w-full pl-40 ">
         <span className="inline-flex items-center px-4 py-1 rounded-full bg-yellow-200 text-purple-900 font-bold text-lg shadow font-heading border border-yellow-300">
           Showcase
@@ -93,7 +89,7 @@ export default function Showcase() {
                   transform: `translateX(-${current * (100 / showcaseUIs.length)}%)`,
                 }}
               >
-                {showcaseUIs.map((ui, idx) => (
+                {showcaseUIs.map((ui) => (
                   <div
                     key={ui.label}
                     className={`flex-shrink-0 w-[480px] h-[320px] md:w-[600px] md:h-[350px] rounded-3xl border-4 ${ui.border} ${ui.bg} ${ui.shadow} flex items-center justify-center relative`}
@@ -140,9 +136,9 @@ export default function Showcase() {
           <div className="flex items-center pl-20">
             <span className="text-xl md:text-6xl font-black text-purple-700 whitespace-nowrap text-center flex flex-col items-center gap-y-6 pt-15">
               <span className="ml-4">
-                All generated 
+                All generated
               </span>
-              
+
               <span className="flex items-center">
                 <span>by</span>
                 <span

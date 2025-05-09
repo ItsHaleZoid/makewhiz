@@ -1,9 +1,7 @@
 "use client";
-import { Fredoka } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React from "react";
-const fredoka = Fredoka({ weight: ["400", "500", "600", "700"], subsets: ["latin"], variable: '--font-fredoka' });
 
 type HeaderProps = {
   onHomeClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -18,11 +16,13 @@ export default function Header({
 }: HeaderProps) {
   const router = useRouter();
   return (
-    <header className="w-full flex items-center justify-between px-51 py-4 bg-purple-100 shadow-md font-heading -mb-25">
+    <header
+      className={`w-full flex items-center justify-between px-51 py-4 bg-purple-100 shadow-md font-heading -mb-25`}
+    >
       <div className="flex items-center space-x-3">
         <span className="text-2xl font-extrabold text-purple-800 font-fredoka">MakeWhiz</span>
       </div>
-     
+
       <nav className="flex items-center space-x-10">
         <a
           href="#"

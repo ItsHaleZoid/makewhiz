@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import MakewhizWhite from "./ui/makewhiz-white";
-import { FaTachometerAlt, FaFolderOpen, FaCog, FaCode } from "react-icons/fa";
+import { FaFolderOpen, FaCog, FaCode } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 // Navigation items
@@ -84,16 +84,16 @@ export default function Sidebar({
               }
               tabIndex={0}
               aria-current={isSelected ? "page" : undefined}
-              onClick={e => {
+              onClick={() => {
                 if (!isControlled) setInternalSelected(idx);
                 if (onSelect) onSelect(idx, item.key as SidebarNavKey);
                 // No navigation for now
               }}
-              onKeyDown={e => {
-                if (e.key === "Enter" || e.key === " ") {
+              onKeyDown={event => {
+                if (event.key === "Enter" || event.key === " ") {
                   if (!isControlled) setInternalSelected(idx);
                   if (onSelect) onSelect(idx, item.key as SidebarNavKey);
-                  e.preventDefault();
+                  event.preventDefault();
                 }
               }}
               layout

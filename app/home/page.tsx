@@ -1,8 +1,7 @@
 "use client";
 import UIGenerator from "@/components/UIGenerator";
-import Sidebar, { SidebarNavKey } from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import Dashboard from "@/components/Dashboard";
-import RecentActivity from "@/components/RecentActivity";
 import Settings from "@/components/Settings";
 import { useState } from "react";
 
@@ -14,7 +13,7 @@ export default function MyProjectsPage() {
     <div className="flex h-screen overflow-hidden">
       <Sidebar
         selectedIndex={selectedIndex}
-        onSelect={(idx, key) => setSelectedIndex(idx)}
+        onSelect={(idx) => setSelectedIndex(idx)}
       />
       <div className="flex-1 h-screen overflow-y-auto bg-gradient-to-br from-yellow-50 via-white to-purple-100">
         {selectedIndex === 2 ? (

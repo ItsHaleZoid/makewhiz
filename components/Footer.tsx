@@ -1,5 +1,3 @@
-import { FaTwitter, FaGithub, FaDiscord } from "react-icons/fa";
-
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-900 text-white py-8 px-4 border-t-4 border-yellow-300 shadow-2xl">
@@ -9,10 +7,7 @@ export default function Footer() {
           <span className="text-2xl font-extrabold text-yellow-300 font-heading tracking-tight drop-shadow-lg flex items-center">
             <span className="mr-2">✨</span>MakeWhiz
           </span>
-         
         </div>
-        {/* Social Icons */}
-       
         {/* Navigation Links */}
         <nav className="flex flex-row flex-wrap gap-6 text-purple-100 text-sm font-semibold">
           <a
