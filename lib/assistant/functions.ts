@@ -1,5 +1,7 @@
 // lib/assistant/functions.ts
 
+import { NextResponse } from 'next/server';
+
 // 1. Get UI images from Dribbble or Behance
 export async function getDesignInspiration({
   platform,
@@ -104,4 +106,8 @@ export async function getFontsForMood({ mood }: { mood: string }) {
   } catch (err) {
     return [];
   }
+}
+
+export async function POST(req: Request) {
+  return NextResponse.json({ ok: true });
 }
