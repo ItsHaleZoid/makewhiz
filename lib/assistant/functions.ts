@@ -1,6 +1,11 @@
 // lib/assistant/functions.ts
 
 import { NextResponse } from 'next/server';
+import { OpenAI } from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 // 1. Get UI images from Dribbble or Behance
 export async function getDesignInspiration({
@@ -30,11 +35,7 @@ export async function getDesignInspiration({
 }
 
 // 2. Analyze dominant colors from an image
-export async function analyzeColorPalette({
-  imageUrl,
-}: {
-  imageUrl: string;
-}) {
+export async function analyzeColorPalette({ imageUrl }: { imageUrl: string }) {
   const res = await fetch(
     `https://api.color.pizza/v1/?url=${encodeURIComponent(imageUrl)}`
   );
@@ -51,58 +52,56 @@ export async function analyzeColorPalette({
 
 // 3. Analyze layout and return improvements via GPT
 export async function optimizeLayout({ code }: { code: string }) {
-  const prompt = `Analyze this UI layout and suggest improvements in spacing, accessibility, and responsiveness:\n\n${code}`;
+  const systemPrompt = `
+You are a world-class frontend developer and UI designer.
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4',
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are a world-class UI/UX accessibility and layout optimization expert.',
-        },
-        { role: 'user', content: prompt },
-      ],
-    }),
+Your job is to take layout code (HTML, JSX, or TailwindCSS) and return an optimized version that improves:
+- Spacing, padding, margin
+- Font sizing and text hierarchy
+- Responsive layout using modern CSS (flex, grid)
+- Visual structure: contrast, color usage, alignment
+- Aesthetic appeal: gradients, shadows, border radius
+- Mobile-first structure and accessibility
+
+Do not invent new sections. Keep the structure identical.
+Return ONLY the improved code. No markdown. No explanation. No wrapping.
+`;
+
+  const res = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: code },
+    ],
+    temperature: 0.5,
   });
 
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content || 'No feedback returned.';
+  const optimized = res.choices?.[0]?.message?.content?.trim() || '';
+
+  return { optimizedCode: optimized };
 }
 
 // 4. Suggest fonts based on mood using GPT
 export async function getFontsForMood({ mood }: { mood: string }) {
-  const prompt = `Suggest 2 font pairings for a web design with this mood: "${mood}". Return them in this JSON format:\n\n[\n  { "heading": "Font Name", "body": "Font Name" },\n  { "heading": "Font Name", "body": "Font Name" }\n]`;
+  const prompt = `Suggest 2 font pairings for a web design with this mood: "${mood}". Return them in this JSON format:\n\n[
+  { "heading": "Font Name", "body": "Font Name" },
+  { "heading": "Font Name", "body": "Font Name" }
+]`;
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4',
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are a typography and branding expert for UI/UX designers.',
-        },
-        { role: 'user', content: prompt },
-      ],
-    }),
+  const res = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a typography and branding expert for UI/UX designers.',
+      },
+      { role: 'user', content: prompt },
+    ],
+    temperature: 0.5,
   });
 
-  const data = await res.json();
-
   try {
-    return JSON.parse(data.choices?.[0]?.message?.content || '[]');
+    return JSON.parse(res.choices?.[0]?.message?.content || '[]');
   } catch (err) {
     return [];
   }
